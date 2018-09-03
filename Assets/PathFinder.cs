@@ -4,19 +4,25 @@ using UnityEngine;
 
 public class PathFinder : MonoBehaviour {
 	[SerializeField] Waypoint startWaypoint, endWaypoint;
+
 	Dictionary<Vector2Int, Waypoint> grid = new Dictionary<Vector2Int, Waypoint>();
+
+	Queue<Waypoint> queue = new Queue<Waypoint>();
+
+	bool isRunning = true;
+
 	Vector2Int[] directions = {
 		Vector2Int.up,
-		Vector2Int.down,
-		Vector2Int.left,
-		Vector2Int.right
+        Vector2Int.right,
+        Vector2Int.down,
+        Vector2Int.left
 	};
 
 	// Use this for initialization
 	void Start () {
 		LoadBlocks();
 		ColorStartAndEnd();
-		ExploreNeighbours();
+		PathFind();
 	}
 	private void LoadBlocks() {
 		Waypoint[] waypoints = FindObjectsOfType<Waypoint>();
@@ -36,13 +42,42 @@ public class PathFinder : MonoBehaviour {
 		startWaypoint.SetTopColor(Color.green);
 		endWaypoint.SetTopColor(Color.red);
 	}
-	
-	void ExploreNeighbours() {
+
+	private void PathFind() {
+		queue.Enqueue(startWaypoint);
+		while (queue.Count > 0 && isRunning) {
+			Waypoint searchCenter = queue.Dequeue();
+			searchCenter.isExplored = true;
+			print ("Searching from " + searchCenter);
+			HaltIfEndFound(searchCenter);
+			ExploreNeighbours(searchCenter);
+		}
+		print ("Finished pathfinding?");
+	}
+
+	private void HaltIfEndFound(Waypoint searchCenter) {
+		if (searchCenter == endWaypoint) {
+			print ("Searching from endnode, therefore stopping");
+			isRunning = false;
+		}
+	}
+
+	private void ExploreNeighbours(Waypoint from) {
+		if (!isRunning) { return; }
 		foreach(Vector2Int direction in directions) {
-			Vector2Int explorationCoordinates = startWaypoint.GetGridPos() + direction;
+			Vector2Int neighbourCoordinates = from.GetGridPos() + direction;
 			try{
-				grid[explorationCoordinates].SetTopColor(Color.blue);
+				QueueNewNeighbours(neighbourCoordinates);
 			} catch {}
+		}
+	}
+
+	private void QueueNewNeighbours(Vector2Int neighbourCoordinates) {
+		Waypoint neighbour = grid[neighbourCoordinates];
+		if (!neighbour.isExplored) {
+			neighbour.SetTopColor(Color.blue);
+			queue.Enqueue(neighbour);
+			print ("queueing " + neighbour);
 		}
 	}
 }

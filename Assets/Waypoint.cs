@@ -3,17 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Waypoint : MonoBehaviour {
-    const int gridSize = 10;
+	public bool isExplored = false;
+
+	const int gridSize = 10;
 	Vector2Int gridPos;
 	public int GetGridSize() {
 		return gridSize;
 	}
 
 	public Vector2Int GetGridPos() {
-		gridPos.x = Mathf.RoundToInt(transform.position.x / gridSize);
-		gridPos.y =	Mathf.RoundToInt(transform.position.z / gridSize);
-
-		return gridPos;
+		return new Vector2Int(
+            Mathf.RoundToInt(transform.position.x / gridSize),
+            Mathf.RoundToInt(transform.position.z / gridSize)
+        );
 	}
 
 	public void SetTopColor(Color color) {
