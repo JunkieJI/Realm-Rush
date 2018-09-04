@@ -22,10 +22,12 @@ public class PathFinder : MonoBehaviour {
 	};
 
 	public List<Waypoint> GetPath() {
-		LoadBlocks();
-		ColorStartAndEnd();
-		BredthFirstSearch();
-		CreatePath();
+		if (path.Count == 0) {
+			LoadBlocks();
+			ColorStartAndEnd();
+			BredthFirstSearch();
+			CreatePath();
+		}
 		return path;
 	}
 
