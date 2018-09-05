@@ -229,7 +229,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectToPan: {fileID: 4324049395040040}
-  targetEnemy: {fileID: 0}
   attackRange: 25
   projectileParticle: {fileID: 198042736863046222}
 --- !u!198 &198042736863046222
