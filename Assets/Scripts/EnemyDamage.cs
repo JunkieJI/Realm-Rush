@@ -1,23 +1,33 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyDamage : MonoBehaviour {
-	[SerializeField] Collider collisionMesh;
-	[SerializeField] int hitPoints = 10;
 
-	void OnParticleCollision(GameObject other) {
-		ProcessHit();
-		if (hitPoints < 1) {
-			KillEnemy();
-		}
-	}
+    [SerializeField] Collider collisionMesh;
+    [SerializeField] int hitPoints = 10;
 
-	void ProcessHit() {
-		hitPoints -= 1;
+	// Use this for initialization
+	void Start () {
+		
 	}
+    private void OnParticleCollision(GameObject other)
+    {
+        ProcessHit();
+        if (hitPoints <= 0)
+        {
+            KillEnemy();
+        }
+    }
+    
+    void ProcessHit()
+    {
+        hitPoints = hitPoints - 1;
+    }
 
-	void KillEnemy() {
-		Destroy(gameObject);
-	}
+    private void KillEnemy()
+    {
+        Destroy(gameObject);
+    }
 }
