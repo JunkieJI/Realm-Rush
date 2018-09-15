@@ -7,6 +7,9 @@ public class Waypoint : MonoBehaviour
     // public ok here as is a data class
     public bool isExplored = false;
     public Waypoint exploredFrom;
+	public bool isPlaceable = true;
+
+	[SerializeField] Tower towerPrefab;
 
     Vector2Int gridPos;
 
@@ -27,7 +30,11 @@ public class Waypoint : MonoBehaviour
         );
     }
 
-	 void OnMouseOver() {
-		print("on mouse " + GetGridPos());
+	void OnMouseOver() {
+		if (Input.GetMouseButtonDown(0) && isPlaceable) {
+			Instantiate(towerPrefab,  transform.position, Quaternion.identity);
+			isPlaceable = false;
+			print("on mouse " + GetGridPos());
+		}
 	}
 }
