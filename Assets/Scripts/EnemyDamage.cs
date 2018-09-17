@@ -19,7 +19,7 @@ public class EnemyDamage : MonoBehaviour {
         ProcessHit();
         if (hitPoints <= 0)
         {
-            KillEnemy();
+            KillEnemy(deathParticlePrefab);
         }
     }
     
@@ -29,7 +29,7 @@ public class EnemyDamage : MonoBehaviour {
         hitParticlePrefab.Play();
     }
 
-    private void KillEnemy()
+    public void KillEnemy(ParticleSystem deathParticlePrefab)
     {
         ParticleSystem deathParticle = Instantiate(deathParticlePrefab, transform.position, Quaternion.identity);
         deathParticle.Play();
